@@ -1,0 +1,16 @@
+select first_name,last_name,email,phone_number,hire_date,department_id from employees where hire_date=(select max(hire_date) from employees);
+ 	
+
+SELECT first_name, last_name, employee_id, phone_number,salary,department_id FROM employees WHERE (department_id,salary) IN ( SELECT department_id, MIN(salary) FROM employees GROUP BY department_id);
+
+
+SELECT first_name, last_name, employee_id, commission_pct,salary,department_id FROM employees where department_id=10 and commission_pct<all (select commission_pct from employees where department_id=11);
+
+
+select distinct department_id from employees L1 where not exists (select * from employees L2 WHERE L1.department_id = L2.department_id and L2.salary > 30000);
+
+select department_id, job_id, commission_pct FROM employees L1 WHERE EXISTS (select * FROM employees L2 WHERE L1.department_id = L2.department_id AND L1.job_id != L2.job_id AND L1.commission_pct < L2.commission_pct);
+
+select distinct manager_id FROM employees L1 WHERE NOT EXISTS (select * FROM employees L2 WHERE L1.manager_id = L2.manager_id and L2.salary < 3500);
+
+select first_name, last_name, employee_id, email, salary, department_id, commission_pct from employees WHERE (manager_id,commission_pct) IN (select manager_id, min(commission_pct) FROM employees group BY manager_id );
